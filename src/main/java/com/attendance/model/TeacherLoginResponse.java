@@ -15,5 +15,5 @@ public class TeacherLoginResponse {
     private String employeeId;
     private String token;
     private boolean attendanceRegistered;
+    private long expiresIn; // Tiempo de expiración en milisegundos
 }
-

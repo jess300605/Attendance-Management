@@ -37,17 +37,17 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        System.out.println("Checking if data initialization is needed...");
+
+        // Verificar si ya existen datos
+        if (teacherRepository.count() > 0) {
+            System.out.println("Data already exists. Skipping initialization.");
+            return;
+        }
+
         System.out.println("Initializing data...");
 
         try {
-            // Limpiar datos existentes
-            attendanceRepository.deleteAllInBatch();
-            gradeRepository.deleteAllInBatch();
-            attendanceSessionRepository.deleteAllInBatch();
-            classroomRepository.deleteAllInBatch();
-            studentRepository.deleteAllInBatch();
-            teacherRepository.deleteAllInBatch();
-
             // Crear profesores con credenciales claras
             Teacher teacher1 = new Teacher();
             teacher1.setFirstName("Juan");
@@ -190,4 +190,3 @@ public class DataInitializer implements CommandLineRunner {
         }
     }
 }
-

@@ -6,6 +6,7 @@ import com.attendance.model.TeacherLogin;
 import com.attendance.model.TeacherLoginResponse;
 import com.attendance.repository.AttendanceRepository;
 import com.attendance.repository.TeacherRepository;
+import com.attendance.security.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,13 @@ public class TeacherService {
 
     private final TeacherRepository teacherRepository;
     private final AttendanceRepository attendanceRepository;
+    private final JwtUtils jwtUtils;
 
     @Autowired
-    public TeacherService(TeacherRepository teacherRepository, AttendanceRepository attendanceRepository) {
+    public TeacherService(TeacherRepository teacherRepository, AttendanceRepository attendanceRepository, JwtUtils jwtUtils) {
         this.teacherRepository = teacherRepository;
         this.attendanceRepository = attendanceRepository;
+        this.jwtUtils = jwtUtils;
     }
 
     public List<Teacher> getAllTeachers() {
@@ -70,15 +73,19 @@ public class TeacherService {
                 System.out.println("Login password: " + loginRequest.getPassword());
 
                 if (teacher.getPassword() != null && teacher.getPassword().equals(loginRequest.getPassword())) {
-                    // Crear respuesta simplificada
+                    // Generar token JWT
+                    String jwtToken = jwtUtils.generateJwtToken(teacher.getId(), teacher.getEmail());
+
+                    // Crear respuesta con token JWT
                     TeacherLoginResponse response = new TeacherLoginResponse();
                     response.setId(teacher.getId());
                     response.setFirstName(teacher.getFirstName());
                     response.setLastName(teacher.getLastName());
                     response.setEmail(teacher.getEmail());
                     response.setEmployeeId(teacher.getEmployeeId());
-                    response.setToken(UUID.randomUUID().toString());
+                    response.setToken(jwtToken);
                     response.setAttendanceRegistered(true);
+                    response.setExpiresIn(jwtUtils.getJwtExpirationMs());
 
                     return response;
                 }
@@ -92,4 +99,3 @@ public class TeacherService {
         }
     }
 }
-
