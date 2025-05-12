@@ -33,6 +33,10 @@ public class Student {
     @Column(nullable = false)
     private String email;
 
+    @ManyToMany(mappedBy = "students")
+    @JsonIgnoreProperties("students")
+    private List<Classroom> classrooms = new ArrayList<>();
+
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("student")
     private List<Attendance> attendanceRecords = new ArrayList<>();
@@ -40,9 +44,4 @@ public class Student {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("student")
     private List<Grade> grades = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "students")
-    @JsonIgnoreProperties("students")
-    private List<Classroom> classrooms = new ArrayList<>();
 }
-

@@ -36,7 +36,7 @@ public class Teacher {
     private String email;
 
     @Column(nullable = false)
-    private String password = "password";
+    private String password = "password"; // Default password for new teachers
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("teacher")
@@ -48,4 +48,3 @@ public class Teacher {
 
     private LocalDateTime lastLogin;
 }
-

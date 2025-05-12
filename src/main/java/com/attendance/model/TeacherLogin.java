@@ -11,4 +11,3 @@ public class TeacherLogin {
     private String email;
     private String password;
 }
-

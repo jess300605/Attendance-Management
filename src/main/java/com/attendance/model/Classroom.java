@@ -46,5 +46,5 @@ public class Classroom {
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("classroom")
     private List<AttendanceSession> attendanceSessions = new ArrayList<>();
-}
 
+}
